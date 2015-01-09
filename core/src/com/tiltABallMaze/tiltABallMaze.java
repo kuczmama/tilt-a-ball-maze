@@ -50,12 +50,10 @@ public class tiltABallMaze extends ApplicationAdapter {
 		convertPixmap(level1);
 		prevX = ballX;
 		prevY = ballY;
-		//pixmap = createPro
-
 	}
 
 	public static void load(){
-		level1 = loadPixmap("levels/testlevel.bmp");
+		level1 = loadPixmap("levels/squarelevel.png");
 		test = new Texture(level1);
 		//level1tex = loadTexture("levels/testlevel.bmp");
 	}
@@ -69,7 +67,6 @@ public class tiltABallMaze extends ApplicationAdapter {
 	}
 
 
-
 	private boolean isWhite(int value){
 		//int value = pixmap.getPixel(x, y);
 		int min = 230;
@@ -81,21 +78,21 @@ public class tiltABallMaze extends ApplicationAdapter {
 		return R == 255 && G == 255 && B == 255 && A == 255;
 		//return R <= 255 && R > min  && G <= 255 && G > min && B <= 255 && B > min && A <= 255 && A > min;
 	}
-
-
+	
 	//test the physics
 	private void calculateImageLocation(){	
 		int fudgeFactor = 0;
-		float tmpX = ballX;
-		float tmpY = ballY;
-		float deltaY = -Gdx.input.getAccelerometerX() * speedConstant;
-		float deltaX = Gdx.input.getAccelerometerY() * speedConstant;
+		int deltaY = (int)(-Gdx.input.getAccelerometerX() * speedConstant);
+		int deltaX = (int)(Gdx.input.getAccelerometerY() * speedConstant);
 		int value = level1.getPixel((int)ballX,(int)screenHeight - (int)ballY);
 		R = ((value & 0xff000000) >>> 24);
 		G = ((value & 0x00ff0000) >>> 16);
 		B = ((value & 0x0000ff00) >>> 8);
 		A = ((value & 0x000000ff));
-		if(!isWhite(level1.getPixel((int)(ballX + deltaX +fudgeFactor),(int)(screenHeight - ballY + deltaY + fudgeFactor)))) {
+		//ballX += deltaX; ballY += deltaY;
+		
+		if(!isWhite(level1.getPixel((int)ballX,(int)(screenHeight - ballY)))){
+		//if(!isWhite(level1.getPixel((int)(ballX + deltaX +fudgeFactor),(int)(screenHeight - ballY + deltaY + fudgeFactor)))) {
 			isWhite = false;
 			ballX = prevX;
 			ballY = prevY;
@@ -106,6 +103,10 @@ public class tiltABallMaze extends ApplicationAdapter {
 			ballX += deltaX;
 			ballY += deltaY;
 		}
+		
+		/******
+		 * Check screen bounds
+		 */
 		if(ballX <= 0){
 			ballX = 0;
 		} else if(ballX >= (screenWidth - boxSize)){
@@ -116,6 +117,9 @@ public class tiltABallMaze extends ApplicationAdapter {
 		} else if(ballY >= (screenHeight - boxSize)){
 			ballY = screenHeight - boxSize;
 		}
+		/**********
+		 * end check screen bounds
+		 */
 	}
 
 	private void convertPixmap(Pixmap original){
