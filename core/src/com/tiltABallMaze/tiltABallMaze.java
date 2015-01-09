@@ -27,12 +27,8 @@ public class tiltABallMaze extends ApplicationAdapter {
 	public static Pixmap level1;
 	private float boxSize = 5.0f;
 	static Texture level1tex;
-	private DrawText drawer;
 	private int R, G,B,A;
-	private boolean desktop = false;
 	private BitmapFont font;
-	private Pixmap pixmap;
-	private static Texture test;
 	private boolean isWhite = false;
 	private float prevX, prevY;
 
@@ -42,7 +38,6 @@ public class tiltABallMaze extends ApplicationAdapter {
 		screenWidth = Gdx.graphics.getWidth();
 		screenHeight = Gdx.graphics.getHeight();
 		img = new Texture("badlogic.jpg");
-		drawer = new DrawText();
 		Assets.load();
 		load();
 		font = new BitmapFont();
@@ -54,8 +49,6 @@ public class tiltABallMaze extends ApplicationAdapter {
 
 	public static void load(){
 		level1 = loadPixmap("levels/squarelevel.png");
-		test = new Texture(level1);
-		//level1tex = loadTexture("levels/testlevel.bmp");
 	}
 
 	public static Texture loadTexture (String file) {
@@ -68,31 +61,27 @@ public class tiltABallMaze extends ApplicationAdapter {
 
 
 	private boolean isWhite(int value){
-		//int value = pixmap.getPixel(x, y);
-		int min = 230;
 		R = ((value & 0xff000000) >>> 24);
 		G = ((value & 0x00ff0000) >>> 16);
 		B = ((value & 0x0000ff00) >>> 8);
 		A = ((value & 0x000000ff));
 
 		return R == 255 && G == 255 && B == 255 && A == 255;
-		//return R <= 255 && R > min  && G <= 255 && G > min && B <= 255 && B > min && A <= 255 && A > min;
 	}
 	
 	//test the physics
 	private void calculateImageLocation(){	
-		int fudgeFactor = 0;
 		int deltaY = (int)(-Gdx.input.getAccelerometerX() * speedConstant);
 		int deltaX = (int)(Gdx.input.getAccelerometerY() * speedConstant);
 		int value = level1.getPixel((int)ballX,(int)screenHeight - (int)ballY);
+		
+		//for debugging
 		R = ((value & 0xff000000) >>> 24);
 		G = ((value & 0x00ff0000) >>> 16);
 		B = ((value & 0x0000ff00) >>> 8);
 		A = ((value & 0x000000ff));
-		//ballX += deltaX; ballY += deltaY;
 		
 		if(!isWhite(level1.getPixel((int)ballX,(int)(screenHeight - ballY)))){
-		//if(!isWhite(level1.getPixel((int)(ballX + deltaX +fudgeFactor),(int)(screenHeight - ballY + deltaY + fudgeFactor)))) {
 			isWhite = false;
 			ballX = prevX;
 			ballY = prevY;
@@ -124,11 +113,9 @@ public class tiltABallMaze extends ApplicationAdapter {
 
 	private void convertPixmap(Pixmap original){
 		Pixmap tmp = new Pixmap((int)screenWidth,(int)screenHeight,Format.RGBA8888);
-		//tmp.drawPixmap(level1,0,0);
 		tmp.drawPixmap(level1, 0, 0,0,0,(int)screenWidth,(int)screenHeight);
 		level1.dispose();
 		level1 = tmp;
-		//level1tex = new Texture(level1);
 		level1tex = new Texture(level1);
 		level1tex.draw(level1, 0, 0);
 	}
@@ -142,7 +129,6 @@ public class tiltABallMaze extends ApplicationAdapter {
 		calculateImageLocation();
 		batch.begin();
 		batch.draw(level1tex,0,0);
-		//level1tex.draw(level1,0,0);
 		batch.draw(img, ballX, ballY,boxSize,boxSize);
 
 		font.draw(batch, R + " " + B + " " + G + " " + A + " " + (int)ballX + " " + (int)ballY + " " + isWhite, 50, 50);
