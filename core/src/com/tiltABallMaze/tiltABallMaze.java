@@ -17,8 +17,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class tiltABallMaze extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
-	private int ballX = 100;
-	private int ballY = 50;
+	private int ballX;
+	private int ballY;
 	private int screenWidth;
 	private int screenHeight;
 	private final int speedConstant = 1;
@@ -41,6 +41,12 @@ public class tiltABallMaze extends ApplicationAdapter {
 		font = new BitmapFont();
 		font.setColor(Color.RED);
 		convertPixmap();
+		try {
+			findStartPosition();
+		} catch (Exception e) {
+			// unable to find start position
+			e.printStackTrace();
+		}
 		prevX = ballX;
 		prevY = ballY;
 	}
@@ -49,9 +55,47 @@ public class tiltABallMaze extends ApplicationAdapter {
 		return new Pixmap(Gdx.files.internal(file));
 	}
 
+	/**
+	 * set the initial start position at the first blue value, by setting the start
+	 * position set set the  ballX, ballY equal to the start position
+	 * @throws Exception can't find start position Exception
+	 */
+	private void findStartPosition() throws Exception{
+		for(int i = 0; i < level1.getWidth(); i++){
+			for(int j = 0; j < level1.getHeight(); j++){
+				int value = level1.getPixel(i, j);
+				if(isColor(value,0,0,255,255,240)){
+					ballX = i;
+					ballY = j;
+					return;
+				}
+			}
+		}
+		throw new Exception("Cannot find start position");
+	}
+
+	/**
+	 * Determine if the given value is the desired color
+	 * @param value the value to check
+	 * @param R desired red value
+	 * @param G desired green value
+	 * @param B desired blue value
+	 * @param A desired alpha value
+	 * @param min desired range of min value
+	 * @return boolean value determining if value is wanted color
+	 */
+	private boolean isColor(int value, int R, int G, int B, int A, int min){
+		int _R = ((value & 0xff000000) >>> 24);
+		int _G = ((value & 0x00ff0000) >>> 16);
+		int _B = ((value & 0x0000ff00) >>> 8);
+		int _A = ((value & 0x000000ff));
+		return (_R <= R && _R > min || R == 0) && 
+				(_G <= G && _G > min || G == 0) &&
+				(_B <= B && _B > min || B == 0) &&
+				(_A <= A && _A > min || A == 0);
+	}
 
 	private boolean isWhite(int value){
-		//deadband
 		int min = 240;
 		R = ((value & 0xff000000) >>> 24);
 		G = ((value & 0x00ff0000) >>> 16);
