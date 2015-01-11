@@ -17,18 +17,18 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class tiltABallMaze extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
-	private float ballX = 100.0f;
-	private float ballY = 50.0f;
-	private float screenWidth;
-	private float screenHeight;
-	private final float speedConstant = 0.5f;
+	private int ballX = 100;
+	private int ballY = 50;
+	private int screenWidth;
+	private int screenHeight;
+	private final int speedConstant = 1;
 	public static Pixmap level1;
-	private float boxSize = 5.0f;
+	private final int boxSize = 5;
 	static Texture level1tex;
 	private int R, G,B,A;
 	private BitmapFont font;
 	private boolean isWhite = false;
-	private float prevX, prevY;
+	private int prevX, prevY;
 
 	@Override
 	public void create () {
@@ -45,35 +45,27 @@ public class tiltABallMaze extends ApplicationAdapter {
 		prevY = ballY;
 	}
 
-	public static Texture loadTexture (String file) {
-		return new Texture(Gdx.files.internal(file));
-	}
-
 	public static Pixmap loadPixmap (String file) {
 		return new Pixmap(Gdx.files.internal(file));
 	}
 
 
 	private boolean isWhite(int value){
+		//deadband
+		int min = 240;
 		R = ((value & 0xff000000) >>> 24);
 		G = ((value & 0x00ff0000) >>> 16);
 		B = ((value & 0x0000ff00) >>> 8);
 		A = ((value & 0x000000ff));
 
-		return R == 255 && G == 255 && B == 255 && A == 255;
+		return R <= 255 && R > min && G <= 255 && G > min &&  B <= 255 && B > min &&  A <= 255 && A > min;
 	}
 
 	//test the physics
 	private void calculateImageLocation(){	
-		int deltaY = (int)(-Gdx.input.getAccelerometerX() * speedConstant);
-		int deltaX = (int)(Gdx.input.getAccelerometerY() * speedConstant);
-		int value = level1.getPixel((int)ballX,(int)screenHeight - (int)ballY);
-		//for debugging
-		R = ((value & 0xff000000) >>> 24);
-		G = ((value & 0x00ff0000) >>> 16);
-		B = ((value & 0x0000ff00) >>> 8);
-		A = ((value & 0x000000ff));
-		if(!isWhite(level1.getPixel((int)ballX,(int)(screenHeight - ballY)))){
+		int deltaY =  (int) (-Gdx.input.getAccelerometerX() * speedConstant);
+		int deltaX =  (int) (Gdx.input.getAccelerometerY() * speedConstant);
+		if(!isWhite(level1.getPixel(ballX,screenHeight - ballY))){
 			isWhite = false;
 			ballX = prevX;
 			ballY = prevY;
@@ -100,8 +92,8 @@ public class tiltABallMaze extends ApplicationAdapter {
 	}
 
 	private void convertPixmap(){
-		Pixmap tmp = new Pixmap((int)screenWidth,(int)screenHeight,Format.RGBA8888);
-		tmp.drawPixmap(level1, 0, 0, level1.getWidth(), level1.getHeight(), 0, 0, (int)screenWidth, (int)screenHeight);
+		Pixmap tmp = new Pixmap(screenWidth,screenHeight,Format.RGBA8888);
+		tmp.drawPixmap(level1, 0, 0, level1.getWidth(), level1.getHeight(), 0, 0, screenWidth, screenHeight);
 		level1.dispose();
 		level1 = tmp;
 		level1tex = new Texture(level1);
@@ -116,7 +108,7 @@ public class tiltABallMaze extends ApplicationAdapter {
 		batch.begin();
 		batch.draw(level1tex,0,0,screenWidth,screenHeight);
 		batch.draw(img, ballX, ballY,boxSize,boxSize);
-		font.draw(batch, R + " " + B + " " + G + " " + A + " " + (int)ballX + " " + (int)ballY + " " + isWhite, 50, 50);
+		font.draw(batch, R + " " + B + " " + G + " " + A + " " + ballX + " " + ballY + " " + isWhite, 50, 50);
 		batch.end();
 	}
 }
