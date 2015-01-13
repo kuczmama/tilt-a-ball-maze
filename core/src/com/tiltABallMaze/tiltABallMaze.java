@@ -1,7 +1,5 @@
 package com.tiltABallMaze;
 
-
-
 import com.TWINcoGames.Helpers.Assets;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -17,8 +15,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class tiltABallMaze extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
-	private int ballX;
-	private int ballY;
+	private int ballX = 770;
+	private int ballY = 250;
 	private int screenWidth;
 	private int screenHeight;
 	private final int speedConstant = 1;
@@ -27,7 +25,7 @@ public class tiltABallMaze extends ApplicationAdapter {
 	static Texture level1tex;
 	private int R, G,B,A;
 	private BitmapFont font;
-	private boolean isWhite = false;
+	private boolean isWhite = true;
 	private int prevX, prevY;
 
 	@Override
@@ -37,7 +35,7 @@ public class tiltABallMaze extends ApplicationAdapter {
 		screenHeight = Gdx.graphics.getHeight();
 		img = new Texture("badlogic.jpg");
 		Assets.load();
-		level1 = loadPixmap("levels/squarelevel.png");
+		level1 = loadPixmap("levels/level1.png");
 		font = new BitmapFont();
 		font.setColor(Color.RED);
 		convertPixmap();
@@ -63,9 +61,9 @@ public class tiltABallMaze extends ApplicationAdapter {
 	private void findStartPosition() throws Exception{
 		for(int i = 0; i < level1.getWidth(); i++){
 			for(int j = 0; j < level1.getHeight(); j++){
-				int value = level1.getPixel(i, j);
-				if(isColor(value,0,0,255,255,240)){
-					ballX = i;
+				int value = level1.getPixel(i, screenHeight - j);
+				if(isBlue(value)){
+					ballX =  i;
 					ballY = j;
 					return;
 				}
@@ -73,7 +71,15 @@ public class tiltABallMaze extends ApplicationAdapter {
 		}
 		throw new Exception("Cannot find start position");
 	}
+	
+	private boolean isBlue(int value){
+		R = ((value & 0xff000000) >>> 24);
+		G = ((value & 0x00ff0000) >>> 16);
+		B = ((value & 0x0000ff00) >>> 8);
+		A = ((value & 0x000000ff));
 
+		return R == 0 && G == 0 && B == 255 && A == 255;
+	}
 	/**
 	 * Determine if the given value is the desired color
 	 * @param value the value to check
@@ -96,7 +102,7 @@ public class tiltABallMaze extends ApplicationAdapter {
 	}
 
 	private boolean isWhite(int value){
-		int min = 240;
+		int min = 255;
 		R = ((value & 0xff000000) >>> 24);
 		G = ((value & 0x00ff0000) >>> 16);
 		B = ((value & 0x0000ff00) >>> 8);
@@ -104,12 +110,22 @@ public class tiltABallMaze extends ApplicationAdapter {
 
 		return R <= 255 && R > min && G <= 255 && G > min &&  B <= 255 && B > min &&  A <= 255 && A > min;
 	}
+	
+	private boolean isBlack(int value){
+		int min = 255;
+		R = ((value & 0xff000000) >>> 24);
+		G = ((value & 0x00ff0000) >>> 16);
+		B = ((value & 0x0000ff00) >>> 8);
+		A = ((value & 0x000000ff));
+
+		return R == 0 && G == 0 && B == 0 && A == 255;
+	}
 
 	//test the physics
 	private void calculateImageLocation(){	
 		int deltaY =  (int) (-Gdx.input.getAccelerometerX() * speedConstant);
 		int deltaX =  (int) (Gdx.input.getAccelerometerY() * speedConstant);
-		if(!isWhite(level1.getPixel(ballX,screenHeight - ballY))){
+		if(isBlack(level1.getPixel(ballX, screenHeight - ballY))){
 			isWhite = false;
 			ballX = prevX;
 			ballY = prevY;
