@@ -21,10 +21,10 @@
 //*********************************************************
 
 package com.tiltABallMaze.Screens;
+import com.TWINcoGames.Helpers.Assets;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
@@ -83,7 +83,7 @@ public class LevelScreen extends AbstractScreen{
 			for(int j = 0; j < level1.getHeight(); j++){
 				int value = level1.getPixel(i, screenHeight - j);
 				if(isColor(value,0,0,255,255)){
-					ballX =  i;
+					ballX = i;
 					ballY = j;
 					return;
 				}
@@ -101,11 +101,12 @@ public class LevelScreen extends AbstractScreen{
 	 * @param A
 	 * @return a boolean value seeing if the value contains the given color
 	 */
-	private boolean isColor(int value, int R, int G, int B, int A){
-		int _R = ((value & 0xff000000) >>> 24);
-		int _G = ((value & 0x00ff0000) >>> 16);
-		int _B = ((value & 0x0000ff00) >>> 8);
-		int _A = ((value & 0x000000ff));
+	private boolean isColor(int value, int _R, int _G, int _B, int _A){
+		R = ((value & 0xff000000) >>> 24);
+		G = ((value & 0x00ff0000) >>> 16);
+		B = ((value & 0x0000ff00) >>> 8);
+		A = ((value & 0x000000ff));
+		
 		return _R == R && _G == G && _B == B && _A == A;
 	}
 
@@ -156,16 +157,34 @@ public class LevelScreen extends AbstractScreen{
 			game.setScreen(new MainScreen(game));
 		}
 	}
+	
+	/**
+	 * Check the current location to 
+	 *  - see if it is green this means game is won
+	 *  - update settings for available levels
+	 *  - display a message to the user
+	 *  - show time
+	 *  - set screen to main menu
+	 */
+	private void checkForWin(){
+		if(isColor(level1.getPixel(ballX, screenHeight - ballY),0,255,0,255)){
+			drawer.drawCenteredText("Level Completed!", Assets.fontColor, 1.0f);
+			//game.setScreen(new MainScreen(game));
+		}
+	}
 
 	@Override
 	public void render (float delta) {
 		screenHelper.clearScreen();
 		calculateImageLocation();
+		
 		batch.begin();
 		batch.draw(level1tex,0,0,screenWidth,screenHeight);
 		batch.draw(img, ballX, ballY,boxSize,boxSize);
-		font.draw(batch, R + " " + B + " " + G + " " + A + " " + ballX + " " + ballY + " " + isWhite, 50, 50);
+		font.draw(batch, R + " " + G + " " + B + " " + A + " " + ballX + " " + ballY + " " + isWhite, 50, 50);
 		batch.end();
 		drawBackButton();
+		checkForWin();
+		
 	}
 }
