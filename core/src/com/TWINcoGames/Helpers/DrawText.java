@@ -40,7 +40,7 @@ public class DrawText {
 		//Assets.font.setColor(Assets.backgroundColor2);
 	}
 
-	public void drawCenteredList(BitmapFont font, String[] messages, Color color) {
+	/*public void drawCenteredList(BitmapFont font, String[] messages, Color color) {
 		if (messages.length <= 0) {
 			System.err.println("String[] must be a positive length");
 		}
@@ -58,6 +58,42 @@ public class DrawText {
 			yPos += space;
 		}
 		batcher.end();
+	}*/
+	
+	/**
+	 * Draw a centered list, which returns an array of rectangles where 
+	 * each rectangle is the bounds of the list
+	 * @param font
+	 * @param messages
+	 * @param color
+	 * @return
+	 */
+	public Rectangle[] drawCenteredList(BitmapFont font, String[] messages, Color color) {
+		if (messages.length <= 0) {
+			System.err.println("String[] must be a positive length");
+		}
+		ArrayList<Rectangle> result = new ArrayList<Rectangle>();
+		// the size of all of the messages
+		float space = font.getBounds((String) "Test").height * 1.5f;
+		float yPos = Gdx.graphics.getHeight() / 2
+				+ font.getBounds((String) "test").height / 2 - space
+				* messages.length / 2f;
+		batcher.begin();
+		font.setColor(color);
+		for (int i = messages.length -1; i >= 0; i--) {
+			font.draw(batcher, messages[i],
+					Gdx.graphics.getWidth() / 2
+							- font.getBounds((String) messages[i]).width / 2, yPos);
+			result.add(new Rectangle(Gdx.graphics.getWidth() / 2
+					- font.getBounds((String) messages[i]).width / 2, yPos - Assets.font.getBounds(messages[i]).height,
+					Assets.font.getBounds(messages[i]).width,
+					Assets.font.getBounds(messages[i]).height));
+			yPos += space;
+			
+		}
+		batcher.end();
+		Rectangle[] rects = new Rectangle[result.size()];
+		return result.toArray(rects);
 	}
 
 	/**

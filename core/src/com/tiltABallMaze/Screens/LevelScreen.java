@@ -10,10 +10,19 @@
 // Date   : Jan 15, 2015
 //
 // Purpose: make it trivial to add a level to the game
+//
+//
+// Note   : Colors are very important in this game
+//          White - Where the ball is allowed to go
+//          Black - Where the ball is NOT allowed to go
+//          Blue  - The ball's starting position
+//          Green - The ball's ending position
+//          Red   - A hazard to avoid
 //*********************************************************
 
 package com.tiltABallMaze.Screens;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -21,6 +30,8 @@ import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
+import com.tiltABallMaze.TiltABallMaze;
 
 public class LevelScreen extends AbstractScreen{
 	SpriteBatch batch;
@@ -37,9 +48,10 @@ public class LevelScreen extends AbstractScreen{
 	private BitmapFont font;
 	private boolean isWhite = true;
 	private int prevX, prevY;
+	private TiltABallMaze game;
 
-
-	public LevelScreen(String levelmap){
+	public LevelScreen(String levelmap,TiltABallMaze game){
+		this.game = game;
 		batch = new SpriteBatch();
 		screenWidth = Gdx.graphics.getWidth();
 		screenHeight = Gdx.graphics.getHeight();
@@ -70,7 +82,7 @@ public class LevelScreen extends AbstractScreen{
 		for(int i = 0; i < level1.getWidth(); i++){
 			for(int j = 0; j < level1.getHeight(); j++){
 				int value = level1.getPixel(i, screenHeight - j);
-				if(isBlue(value)){
+				if(isColor(value,0,0,255,255)){
 					ballX =  i;
 					ballY = j;
 					return;
@@ -80,60 +92,29 @@ public class LevelScreen extends AbstractScreen{
 		throw new Exception("Cannot find start position");
 	}
 
-	private boolean isBlue(int value){
-		R = ((value & 0xff000000) >>> 24);
-		G = ((value & 0x00ff0000) >>> 16);
-		B = ((value & 0x0000ff00) >>> 8);
-		A = ((value & 0x000000ff));
-
-		return R == 0 && G == 0 && B == 255 && A == 255;
-	}
 	/**
-	 * Determine if the given value is the desired color
-	 * @param value the value to check
-	 * @param R desired red value
-	 * @param G desired green value
-	 * @param B desired blue value
-	 * @param A desired alpha value
-	 * @param min desired range of min value
-	 * @return boolean value determining if value is wanted color
+	 * Determine if a certain value is a given color
+	 * @param value 
+	 * @param R
+	 * @param G
+	 * @param B
+	 * @param A
+	 * @return a boolean value seeing if the value contains the given color
 	 */
-	private boolean isColor(int value, int R, int G, int B, int A, int min){
+	private boolean isColor(int value, int R, int G, int B, int A){
 		int _R = ((value & 0xff000000) >>> 24);
 		int _G = ((value & 0x00ff0000) >>> 16);
 		int _B = ((value & 0x0000ff00) >>> 8);
 		int _A = ((value & 0x000000ff));
-		return (_R <= R && _R > min || R == 0) && 
-				(_G <= G && _G > min || G == 0) &&
-				(_B <= B && _B > min || B == 0) &&
-				(_A <= A && _A > min || A == 0);
+		return _R == R && _G == G && _B == B && _A == A;
 	}
 
-	private boolean isWhite(int value){
-		int min = 255;
-		R = ((value & 0xff000000) >>> 24);
-		G = ((value & 0x00ff0000) >>> 16);
-		B = ((value & 0x0000ff00) >>> 8);
-		A = ((value & 0x000000ff));
-
-		return R <= 255 && R > min && G <= 255 && G > min &&  B <= 255 && B > min &&  A <= 255 && A > min;
-	}
-
-	private boolean isBlack(int value){
-		int min = 255;
-		R = ((value & 0xff000000) >>> 24);
-		G = ((value & 0x00ff0000) >>> 16);
-		B = ((value & 0x0000ff00) >>> 8);
-		A = ((value & 0x000000ff));
-
-		return R == 0 && G == 0 && B == 0 && A == 255;
-	}
 
 	//test the physics
 	private void calculateImageLocation(){	
 		int deltaY =  (int) (-Gdx.input.getAccelerometerX() * speedConstant);
 		int deltaX =  (int) (Gdx.input.getAccelerometerY() * speedConstant);
-		if(isBlack(level1.getPixel(ballX, screenHeight - ballY))){
+		if(isColor(level1.getPixel(ballX, screenHeight - ballY),0,0,0,255)){
 			isWhite = false;
 			ballX = prevX;
 			ballY = prevY;
@@ -168,10 +149,19 @@ public class LevelScreen extends AbstractScreen{
 		level1tex.draw(level1, 0, 0);
 	}
 
+	private void drawBackButton(){
+		Rectangle backBounds = drawer.drawTextUpperLeft("Back");
+		if(screenHelper.isTouching(backBounds) || Gdx.input.isKeyPressed(Keys.BACK)){
+			game.setScreen(new MainScreen(game));
+		}
+
+	}
+
 	@Override
 	public void render (float delta) {
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		drawBackButton();
 		calculateImageLocation();
 		batch.begin();
 		batch.draw(level1tex,0,0,screenWidth,screenHeight);

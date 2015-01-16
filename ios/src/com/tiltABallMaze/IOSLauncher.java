@@ -5,13 +5,13 @@ import org.robovm.apple.uikit.UIApplication;
 
 import com.badlogic.gdx.backends.iosrobovm.IOSApplication;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
-import com.tiltABallMaze.tiltABallMaze;
+import com.tiltABallMaze.TiltABallMaze;
 
 public class IOSLauncher extends IOSApplication.Delegate {
     @Override
     protected IOSApplication createApplication() {
         IOSApplicationConfiguration config = new IOSApplicationConfiguration();
-        return new IOSApplication(new tiltABallMaze(), config);
+        return new IOSApplication(new TiltABallMaze(), config);
     }
 
     public static void main(String[] argv) {

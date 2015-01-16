@@ -4,7 +4,7 @@ import com.badlogic.gdx.Game;
 import com.tiltABallMaze.Screens.SplashScreen;
 
 
-public class tiltABallMaze extends Game {
+public class TiltABallMaze extends Game {
 
 	@Override
 	public void create () {

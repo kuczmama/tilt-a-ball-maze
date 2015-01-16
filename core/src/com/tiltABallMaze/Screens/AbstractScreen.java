@@ -16,6 +16,7 @@ package com.tiltABallMaze.Screens;
 import com.TWINcoGames.Helpers.DrawShapes;
 import com.TWINcoGames.Helpers.DrawText;
 import com.TWINcoGames.Helpers.ScreenHelper;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -33,6 +34,7 @@ public abstract class AbstractScreen  extends ScreenAdapter {
 	
 	
 	protected AbstractScreen() {
+		Gdx.input.setCatchBackKey(true);
 		screenHelper = new ScreenHelper();
 		drawer = new DrawText();
 		batcher = new SpriteBatch();

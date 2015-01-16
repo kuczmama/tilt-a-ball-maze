@@ -20,19 +20,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.tiltABallMaze.tiltABallMaze;
+import com.tiltABallMaze.TiltABallMaze;
 
 /**
 * @author Mark
 *
 */
 public class SplashScreen extends AbstractScreen{
-	tiltABallMaze game;
+	TiltABallMaze game;
 	private Texture logo;
 	long time;
 
-
-	public SplashScreen(tiltABallMaze game){
+	public SplashScreen(TiltABallMaze game){
 		this.game = game;
 		Assets.load();
 		//Settings.load();
@@ -42,7 +41,6 @@ public class SplashScreen extends AbstractScreen{
 		
 		
 	}
-
 
 	private void drawLogo(){
 		float width = Gdx.graphics.getWidth() ;
@@ -65,7 +63,7 @@ public class SplashScreen extends AbstractScreen{
 	private void makeDelay(float delta){
 			drawLogo();
 			if( (int)((TimeUtils.millis() - time)) >= 2000 || Gdx.input.isTouched()){
-				game.setScreen(new LevelScreen("levels/level1.png"));
+				game.setScreen(new MainScreen(game));
 			}
 	}
 	

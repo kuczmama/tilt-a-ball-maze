@@ -1,6 +1,8 @@
 package com.TWINcoGames.Helpers;
 
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
@@ -32,13 +34,22 @@ public class Assets {
 	public static Color backgroundColor2;
 	public static String AppKey = "2500ecd8e8aa6df96561e83609460690e653912695da18e90c78b9ddc8d67d27";
 	public static String SecretKey = "e1db7ff88cdcaf9573d2802adba81b3ccfac89751a6d7eb7573796fef150a1b6";
+	public static ArrayList<String> levels;
 	
 	
 	public static Texture loadTexture (String file) {
 		return new Texture(Gdx.files.internal(file));
 	}
 	
+	static void addLevel(String level){
+		levels.add("levels/" + level);
+	}
+	
 	public static void load(){
+		levels = new ArrayList<String>();
+		addLevel("level1.png");
+		addLevel("Level2.png");
+		addLevel("squarelevel.png");
 		rulesImage = loadTexture("data/rulesImageWhite.png");
 		items = loadTexture("data/items.png");
 		gameOver = new TextureRegion(items, 352, 256, 160, 96);
