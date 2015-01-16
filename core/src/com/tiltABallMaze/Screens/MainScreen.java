@@ -29,7 +29,7 @@ public class MainScreen extends AbstractScreen{
 		for(int i = levelsArr.length - 1; i >= 0; i--){
 			levelsList[i] = "level " + Integer.toString(i + 1); 
 		}
-		levelButtons = drawer.drawCenteredList(Assets.font, levelsList, c);
+		levelButtons = drawer.drawCenteredListWithBounds(Assets.font, levelsList, c);
 	}
 
 	@Override

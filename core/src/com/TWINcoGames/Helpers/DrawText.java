@@ -40,7 +40,7 @@ public class DrawText {
 		//Assets.font.setColor(Assets.backgroundColor2);
 	}
 
-	/*public void drawCenteredList(BitmapFont font, String[] messages, Color color) {
+	public void drawCenteredList(BitmapFont font, String[] messages, Color color) {
 		if (messages.length <= 0) {
 			System.err.println("String[] must be a positive length");
 		}
@@ -58,7 +58,7 @@ public class DrawText {
 			yPos += space;
 		}
 		batcher.end();
-	}*/
+	}
 	
 	/**
 	 * Draw a centered list, which returns an array of rectangles where 
@@ -68,7 +68,7 @@ public class DrawText {
 	 * @param color
 	 * @return
 	 */
-	public Rectangle[] drawCenteredList(BitmapFont font, String[] messages, Color color) {
+	public Rectangle[] drawCenteredListWithBounds(BitmapFont font, String[] messages, Color color) {
 		if (messages.length <= 0) {
 			System.err.println("String[] must be a positive length");
 		}
@@ -213,7 +213,27 @@ public class DrawText {
 		return new Rectangle(x, y - Assets.font.getBounds(str).height,
 				Assets.font.getBounds(str).width,
 				Assets.font.getBounds(str).height);
+	}
+	
+	/**
+	 * Draw text in the upper left hand corner
+	 * @param str the text to draw
+	 * @param color the color of the text
+	 * @return the Rectangle of the bounds of the text
+	 */
+	public Rectangle drawTextUpperLeft(String str,Color color) {
+		batcher.begin();
+		Assets.font.setColor(color);
+		float x = Assets.font.getBounds(str).height;
+		float space = Assets.font.getSpaceWidth();
+		float y = Gdx.graphics.getHeight() - space;
 
+		Assets.font.draw(batcher, str, x, y);
+
+		batcher.end();
+		return new Rectangle(x, y - Assets.font.getBounds(str).height,
+				Assets.font.getBounds(str).width,
+				Assets.font.getBounds(str).height);
 	}
 
 	/**

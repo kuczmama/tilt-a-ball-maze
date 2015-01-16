@@ -150,23 +150,22 @@ public class LevelScreen extends AbstractScreen{
 	}
 
 	private void drawBackButton(){
-		Rectangle backBounds = drawer.drawTextUpperLeft("Back");
+		Color color = new Color(1.0f,1.0f,1.0f,1.0f);
+		Rectangle backBounds = drawer.drawTextUpperLeft("Back",color);
 		if(screenHelper.isTouching(backBounds) || Gdx.input.isKeyPressed(Keys.BACK)){
 			game.setScreen(new MainScreen(game));
 		}
-
 	}
 
 	@Override
 	public void render (float delta) {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		drawBackButton();
+		screenHelper.clearScreen();
 		calculateImageLocation();
 		batch.begin();
 		batch.draw(level1tex,0,0,screenWidth,screenHeight);
 		batch.draw(img, ballX, ballY,boxSize,boxSize);
 		font.draw(batch, R + " " + B + " " + G + " " + A + " " + ballX + " " + ballY + " " + isWhite, 50, 50);
 		batch.end();
+		drawBackButton();
 	}
 }
