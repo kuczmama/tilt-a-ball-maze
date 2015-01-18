@@ -20,6 +20,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.tiltABallMaze.Settings;
 
 /**
  * @author Mark
@@ -31,6 +32,7 @@ public abstract class AbstractScreen  extends ScreenAdapter {
 	protected SpriteBatch batcher;
 	protected DrawShapes drawShape;
 	protected ShapeRenderer shapeRenderer;
+	protected Settings settings;
 	
 	
 	protected AbstractScreen() {
@@ -40,6 +42,7 @@ public abstract class AbstractScreen  extends ScreenAdapter {
 		batcher = new SpriteBatch();
 		drawShape = new DrawShapes();
 		shapeRenderer = new ShapeRenderer();
+		settings = new Settings();
 	}
 	
 	

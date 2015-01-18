@@ -34,6 +34,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.tiltABallMaze.TiltABallMaze;
 
 public class LevelScreen extends AbstractScreen{
+	private boolean debug = true;
 	SpriteBatch batch;
 	Texture img;
 	private int ballX = 770;
@@ -49,9 +50,11 @@ public class LevelScreen extends AbstractScreen{
 	private boolean isWhite = true;
 	private int prevX, prevY;
 	private TiltABallMaze game;
-
+	private String levelmap;
+	
 	public LevelScreen(String levelmap,TiltABallMaze game){
 		this.game = game;
+		this.levelmap = levelmap;
 		batch = new SpriteBatch();
 		screenWidth = Gdx.graphics.getWidth();
 		screenHeight = Gdx.graphics.getHeight();
@@ -106,15 +109,30 @@ public class LevelScreen extends AbstractScreen{
 		G = ((value & 0x00ff0000) >>> 16);
 		B = ((value & 0x0000ff00) >>> 8);
 		A = ((value & 0x000000ff));
-		
 		return _R == R && _G == G && _B == B && _A == A;
 	}
 
 
 	//test the physics
 	private void calculateImageLocation(){	
+
 		int deltaY =  (int) (-Gdx.input.getAccelerometerX() * speedConstant);
 		int deltaX =  (int) (Gdx.input.getAccelerometerY() * speedConstant);
+		if(debug){
+			if(Gdx.input.isKeyPressed(Keys.UP)){
+				deltaY += 2;
+			}
+			if(Gdx.input.isKeyPressed(Keys.DOWN)){
+				deltaY -= 2;
+			}
+			if(Gdx.input.isKeyPressed(Keys.LEFT)){
+				deltaX -= 2;
+			}
+			if(Gdx.input.isKeyPressed(Keys.RIGHT)){
+				deltaX  += 2;
+			}
+		}
+
 		if(isColor(level1.getPixel(ballX, screenHeight - ballY),0,0,0,255)){
 			isWhite = false;
 			ballX = prevX;
@@ -141,6 +159,12 @@ public class LevelScreen extends AbstractScreen{
 		}
 	}
 
+	private void handleFallInHole() throws Exception{
+		if(isColor(level1.getPixel(ballX, screenHeight - ballY),255,0,0,255)){
+			findStartPosition();
+		}
+	}
+
 	private void convertPixmap(){
 		Pixmap tmp = new Pixmap(screenWidth,screenHeight,Format.RGBA8888);
 		tmp.drawPixmap(level1, 0, 0, level1.getWidth(), level1.getHeight(), 0, 0, screenWidth, screenHeight);
@@ -157,7 +181,7 @@ public class LevelScreen extends AbstractScreen{
 			game.setScreen(new MainScreen(game));
 		}
 	}
-	
+
 	/**
 	 * Check the current location to 
 	 *  - see if it is green this means game is won
@@ -167,17 +191,44 @@ public class LevelScreen extends AbstractScreen{
 	 *  - set screen to main menu
 	 */
 	private void checkForWin(){
+		//if win actually happens
 		if(isColor(level1.getPixel(ballX, screenHeight - ballY),0,255,0,255)){
 			drawer.drawCenteredText("Level Completed!", Assets.fontColor, 1.0f);
-			//game.setScreen(new MainScreen(game));
+			incrementHighestLevelIfNeeeded();
+			game.setScreen(new MainScreen(game));
 		}
+	}
+	
+	/**
+	 * Sets the current highest level in the settings, it finds what the current
+	 * level is and then when it finally finds it, if the current level is greater than
+	 * or equal to the highest level in the settings, it will increment the highest level
+	 * to this level + 1
+	 */
+	private void incrementHighestLevelIfNeeeded(){
+		int currLevel = 1;
+		for(String level : Assets.levels){
+			if(level.equals(levelmap)){
+				if((currLevel) >= settings.getHighestUnlockedLevel()){
+					settings.setHighestUnlockedLevel(1 + currLevel);
+					return;
+				}
+				return;
+			}
+			currLevel++;
+		}
+
 	}
 
 	@Override
 	public void render (float delta) {
 		screenHelper.clearScreen();
 		calculateImageLocation();
-		
+		try{
+			handleFallInHole();
+		} catch (Exception e){
+			e.printStackTrace();
+		}
 		batch.begin();
 		batch.draw(level1tex,0,0,screenWidth,screenHeight);
 		batch.draw(img, ballX, ballY,boxSize,boxSize);
@@ -185,6 +236,6 @@ public class LevelScreen extends AbstractScreen{
 		batch.end();
 		drawBackButton();
 		checkForWin();
-		
+
 	}
 }

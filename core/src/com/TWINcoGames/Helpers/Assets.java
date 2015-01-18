@@ -47,9 +47,9 @@ public class Assets {
 	
 	public static void load(){
 		levels = new ArrayList<String>();
-		addLevel("level1.png");
 		addLevel("Level2.png");
 		addLevel("squarelevel.png");
+		
 		rulesImage = loadTexture("data/rulesImageWhite.png");
 		items = loadTexture("data/items.png");
 		gameOver = new TextureRegion(items, 352, 256, 160, 96);
