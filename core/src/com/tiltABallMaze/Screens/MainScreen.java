@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import com.TWINcoGames.Helpers.Assets;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.tiltABallMaze.TiltABallMaze;
 
 public class MainScreen extends AbstractScreen{
@@ -12,9 +16,11 @@ public class MainScreen extends AbstractScreen{
 	Rectangle[] unlockedLevelButtons;
 	TiltABallMaze game;
 	ArrayList<String> levels;
+	private Table table;
 	
 	public MainScreen(TiltABallMaze game) {
 		this.game = game;
+		table = new Table();
 	}
 	
 	/**
@@ -23,6 +29,9 @@ public class MainScreen extends AbstractScreen{
 	 * on and selected
 	 */
 	private void showLevelsList(){
+		//ScrollPane sp = new ScrollPane(sp);
+		Skin skin = new Skin();
+		
 		Color unlocked = new Color(0.0f, 0.0f, 0.0f, 1.0f);
 		Color locked = new Color(.5f,.5f,.5f,1.0f);
 		String[] levelsArr = new String[Assets.levels.size()];
@@ -31,6 +40,8 @@ public class MainScreen extends AbstractScreen{
 		//make everything gray first
 		for(int i = levelsArr.length - 1; i >= 0; i--){
 			levelsList[i] = "level " + Integer.toString(i + 1); 
+			//TextField levelText = new TextField("level " + Integer.toString(i + 1),skin);
+			//table.add(levelText).expandX();
 		}
 		//set some of the levels to be unlocked up to the highest level
 		for(int i = levelsArr.length - 1; i >= 0; i--){
@@ -46,7 +57,7 @@ public class MainScreen extends AbstractScreen{
 
 	@Override
 	public void render(float delta) {
-		screenHelper.clearScreen();
+		super.render(delta);
 		showLevelsList();
 		processLevelClicks();
 	}

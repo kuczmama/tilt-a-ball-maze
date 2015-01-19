@@ -19,29 +19,30 @@ import com.TWINcoGames.Helpers.Assets;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.tiltABallMaze.TiltABallMaze;
 
 /**
-* @author Mark
-*
-*/
+ * @author Mark
+ *
+ */
 public class SplashScreen extends AbstractScreen{
-	TiltABallMaze game;
+	private TiltABallMaze game;
 	private Texture logo;
-	long time;
+	private long time;
 
 	public SplashScreen(TiltABallMaze game){
 		this.game = game;
 		Assets.load();
 		//Settings.load();
-		
 		time = TimeUtils.millis();
 		logo = new Texture(Gdx.files.internal("data/twinco_logo.png"));
-		
-		
+		logo.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 	}
 
+
+	
 	private void drawLogo(){
 		float width = Gdx.graphics.getWidth() ;
 		float height = Gdx.graphics.getHeight();
@@ -55,6 +56,12 @@ public class SplashScreen extends AbstractScreen{
 		}
 		batcher.end();
 	}
+	
+	@Override
+	public void resize(int width, int height) {
+		super.resize(width, height);
+		stage.clear();
+	}
 
 	/**
 	 * Make a delay for the logo to be displayed on the splash
@@ -66,13 +73,16 @@ public class SplashScreen extends AbstractScreen{
 				game.setScreen(new MainScreen(game));
 			}
 	}
-	
+
 	@Override
 	public void render(float delta) {
 		screenHelper.setBackgroundColor(Color.WHITE);
 		makeDelay(delta);
 	}
 
-
-
+	@Override
+	public void dispose(){
+		super.dispose();
+		logo.dispose();
+	}
 }

@@ -17,23 +17,26 @@ import com.TWINcoGames.Helpers.DrawShapes;
 import com.TWINcoGames.Helpers.DrawText;
 import com.TWINcoGames.Helpers.ScreenHelper;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.tiltABallMaze.Settings;
 
 /**
  * @author Mark
  *
  */
-public abstract class AbstractScreen  extends ScreenAdapter {
+public abstract class AbstractScreen  extends ScreenAdapter implements Screen{
 	protected ScreenHelper screenHelper;
 	protected DrawText drawer;
 	protected SpriteBatch batcher;
 	protected DrawShapes drawShape;
 	protected ShapeRenderer shapeRenderer;
 	protected Settings settings;
-	
+	protected final Stage stage;
 	
 	protected AbstractScreen() {
 		Gdx.input.setCatchBackKey(true);
@@ -43,9 +46,19 @@ public abstract class AbstractScreen  extends ScreenAdapter {
 		drawShape = new DrawShapes();
 		shapeRenderer = new ShapeRenderer();
 		settings = new Settings();
+		stage = new Stage(new ScreenViewport());
+		Gdx.input.setInputProcessor(stage);
 	}
 	
+	@Override
+	 public void resize(int width, int height) {
+		stage.getViewport().update(width, height, true);
+	}
 	
 	@Override
-	public abstract void render(float delta);
+	public void render(float delta){
+		screenHelper.clearScreen();
+		stage.act(delta);
+		stage.draw();
+	}
 }

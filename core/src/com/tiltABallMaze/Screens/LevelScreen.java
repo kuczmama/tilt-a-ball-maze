@@ -51,6 +51,7 @@ public class LevelScreen extends AbstractScreen{
 	private int prevX, prevY;
 	private TiltABallMaze game;
 	private String levelmap;
+
 	
 	public LevelScreen(String levelmap,TiltABallMaze game){
 		this.game = game;
@@ -222,7 +223,7 @@ public class LevelScreen extends AbstractScreen{
 
 	@Override
 	public void render (float delta) {
-		screenHelper.clearScreen();
+		super.render(delta);
 		calculateImageLocation();
 		try{
 			handleFallInHole();
