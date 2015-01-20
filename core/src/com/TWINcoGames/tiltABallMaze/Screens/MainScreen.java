@@ -1,8 +1,9 @@
-package com.tiltABallMaze.Screens;
+package com.TWINcoGames.tiltABallMaze.Screens;
 
 import java.util.ArrayList;
 
 import com.TWINcoGames.Helpers.Assets;
+import com.TWINcoGames.tiltABallMaze.tiltABallMaze;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
@@ -10,18 +11,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.tiltABallMaze.TiltABallMaze;
 
 public class MainScreen extends AbstractScreen{
 	Rectangle[] levelButtons;
 	Rectangle[] unlockedLevelButtons;
-	TiltABallMaze game;
+	tiltABallMaze game;
 	ArrayList<String> levels;
 	private Table table;
 	private TextureAtlas atlas;
 	private Skin skin;
 	
-	public MainScreen(TiltABallMaze game) {
+	public MainScreen(tiltABallMaze game) {
 		this.game = game;
 		table = new Table();
 	}

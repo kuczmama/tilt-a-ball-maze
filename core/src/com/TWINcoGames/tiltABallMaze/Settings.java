@@ -1,4 +1,4 @@
-package com.tiltABallMaze;
+package com.TWINcoGames.tiltABallMaze;
 
 import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 

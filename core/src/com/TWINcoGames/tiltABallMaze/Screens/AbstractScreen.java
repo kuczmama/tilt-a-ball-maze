@@ -11,11 +11,12 @@
 //
 // Purpose: Abstract class to avoid reusing screen components
 //*********************************************************
-package com.tiltABallMaze.Screens;
+package com.TWINcoGames.tiltABallMaze.Screens;
 
 import com.TWINcoGames.Helpers.DrawShapes;
 import com.TWINcoGames.Helpers.DrawText;
 import com.TWINcoGames.Helpers.ScreenHelper;
+import com.TWINcoGames.tiltABallMaze.Settings;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
@@ -25,7 +26,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.tiltABallMaze.Settings;
 
 /**
  * @author Mark

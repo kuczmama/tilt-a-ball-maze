@@ -14,14 +14,14 @@
 //Purpose: The splash screen to display the logo
 //*********************************************************
 
-package com.tiltABallMaze.Screens;
+package com.TWINcoGames.tiltABallMaze.Screens;
 import com.TWINcoGames.Helpers.Assets;
+import com.TWINcoGames.tiltABallMaze.tiltABallMaze;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.tiltABallMaze.TiltABallMaze;
 
 
 /**
@@ -29,11 +29,11 @@ import com.tiltABallMaze.TiltABallMaze;
  *
  */
 public class SplashScreen extends AbstractScreen{
-	private TiltABallMaze game;
+	private tiltABallMaze game;
 	private Texture logo;
 	private long time;
 
-	public SplashScreen(TiltABallMaze game){
+	public SplashScreen(tiltABallMaze game){
 		this.game = game;
 		Assets.load();
 		//Settings.load();

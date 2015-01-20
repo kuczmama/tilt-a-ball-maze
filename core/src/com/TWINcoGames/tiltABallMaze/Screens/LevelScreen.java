@@ -20,8 +20,9 @@
 //          Red   - A hazard to avoid
 //*********************************************************
 
-package com.tiltABallMaze.Screens;
+package com.TWINcoGames.tiltABallMaze.Screens;
 import com.TWINcoGames.Helpers.Assets;
+import com.TWINcoGames.tiltABallMaze.tiltABallMaze;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
@@ -31,7 +32,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.tiltABallMaze.TiltABallMaze;
 
 public class LevelScreen extends AbstractScreen{
 	private boolean debug = true;
@@ -49,11 +49,11 @@ public class LevelScreen extends AbstractScreen{
 	private BitmapFont font;
 	private boolean isWhite = true;
 	private int prevX, prevY;
-	private TiltABallMaze game;
+	private tiltABallMaze game;
 	private String levelmap;
 
 	
-	public LevelScreen(String levelmap,TiltABallMaze game){
+	public LevelScreen(String levelmap,tiltABallMaze game){
 		this.game = game;
 		this.levelmap = levelmap;
 		batch = new SpriteBatch();
