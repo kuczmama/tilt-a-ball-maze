@@ -49,6 +49,7 @@ public class Assets {
 		levels = new ArrayList<String>();
 		addLevel("Level2.png");
 		addLevel("squarelevel.png");
+		addLevel("maze0.png");
 		
 		rulesImage = loadTexture("data/rulesImageWhite.png");
 		items = loadTexture("data/items.png");

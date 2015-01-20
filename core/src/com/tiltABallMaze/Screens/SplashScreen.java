@@ -23,6 +23,7 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.tiltABallMaze.TiltABallMaze;
 
+
 /**
  * @author Mark
  *
@@ -40,8 +41,6 @@ public class SplashScreen extends AbstractScreen{
 		logo = new Texture(Gdx.files.internal("data/twinco_logo.png"));
 		logo.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 	}
-
-
 	
 	private void drawLogo(){
 		float width = Gdx.graphics.getWidth() ;
@@ -55,12 +54,6 @@ public class SplashScreen extends AbstractScreen{
 			batcher.draw(logo,width/2f - height/2f,0,height,height);
 		}
 		batcher.end();
-	}
-	
-	@Override
-	public void resize(int width, int height) {
-		super.resize(width, height);
-		stage.clear();
 	}
 
 	/**
@@ -76,6 +69,7 @@ public class SplashScreen extends AbstractScreen{
 
 	@Override
 	public void render(float delta) {
+		super.render(delta);
 		screenHelper.setBackgroundColor(Color.WHITE);
 		makeDelay(delta);
 	}
