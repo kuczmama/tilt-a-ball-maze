@@ -1,4 +1,4 @@
-package com.tiltABallMaze.desktop;
+                                      package com.tiltABallMaze.desktop;
 
 import com.TWINcoGames.tiltABallMaze.tiltABallMaze;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;

@@ -1,0 +1,57 @@
+*{
+    background-color: #236167;    
+}
+
+a{
+    color: #aaaaaa;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+input{
+    color: white;
+}
+
+.button {
+    border: 1px solid #0E2424;
+    background: #415A5A;
+}
+.button:hover {
+    border: 1px solid #0E2424;
+    background: #79AAAA;
+}
+
+#comments{
+    color: white;
+    border: thick solid #689798;
+    width: 500px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    
+}
+
+#page {
+    /*background-color: white;*/
+    color: white;
+    border: thick solid #689798;
+    width: 500px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    
+}
+
+#get{
+    margin: 10px 10px;
+}
+
+#put{
+    margin: 10px 10px;
+    background-color: #eeeeee;
+}
+

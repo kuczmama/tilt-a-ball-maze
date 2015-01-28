@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" xmlns="*"
+	applicationComplete="applicationCompleteHandler()">
+
+	<mx:Script>
+		<![CDATA[
+
+			import mx.messaging.ChannelSet;
+			import mx.messaging.channels.AMFChannel;
+			import mx.controls.Alert;
+			import mx.rpc.AsyncToken;
+			import mx.rpc.AsyncResponder;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			private var user:Object = null;
+			
+			private function applicationCompleteHandler():void
+			{
+				securityHelper.getAuthentication();
+				chat.consumer.subscribe();
+			}
+			
+			private function userHandler(event:ResultEvent):void 
+			{
+				user = event.result;
+				if (user != null) {
+					userId.text = user.name;
+					userId.editable = false;
+					password.editable = false;
+				}
+			}
+
+			private function faultHandler(event:FaultEvent):void
+			{
+				Alert.show(event.fault.faultString, "Error accessing RemoteObject");
+			}
+			
+			private function login():void
+			{
+				var token:AsyncToken = securityHelper.channelSet.login(userId.text, password.text);
+	  			token.addResponder(
+	  				new AsyncResponder(
+	  					function(event:ResultEvent, token:Object = null):void{
+	  						user = event.result;
+	  						userId.editable = false;
+	  						password.editable = false;
+	  					},
+	  					function(event:FaultEvent, token:Object = null):void{
+	  						Alert.show(event.fault.faultString, "Login Failed");
+	  					}
+	  				)
+	  			);
+			}
+
+			private function logout():void
+			{
+				securityHelper.channelSet.logout();
+				user = null;
+				userId.text = "";
+				userId.editable = true;
+				password.text = "";
+				password.editable = true;
+				grid.dataProvider.removeAll();		
+			}
+			
+		]]>
+	</mx:Script>
+
+	<mx:RemoteObject id="productService" destination="securedProductService" fault="faultHandler(event)"/>
+	<mx:RemoteObject id="securityHelper" destination="securityHelper" fault="faultHandler(event)">
+		<mx:method name="getAuthentication" result="userHandler(event)"/>
+	</mx:RemoteObject>
+
+	<mx:Form>
+		<mx:FormItem label="User Id">
+			<mx:TextInput id="userId"/>
+		</mx:FormItem>
+		<mx:FormItem label="Password">
+			<mx:TextInput id="password" displayAsPassword="true"/>
+		</mx:FormItem>
+		<mx:FormItem direction="horizontal">
+			<mx:Button label="Login" click="login()"/>
+			<mx:Button label="Logout" click="logout()"/>
+		</mx:FormItem>
+	</mx:Form>
+	
+	<mx:Accordion width="100%" visible="{user != null}">
+	
+		<mx:Canvas label="Products" width="100%">
+			<mx:Panel width="100%">
+				<mx:DataGrid id="grid" dataProvider="{productService.findAll.lastResult}" width="100%" height="100%">
+					<mx:columns>
+						<mx:DataGridColumn dataField="productId" headerText="Product ID" visible="{user != null ? user.authorities.indexOf('ROLE_ADMIN') >= 0 : false}"/>
+						<mx:DataGridColumn dataField="name" headerText="Name" />
+					    <mx:DataGridColumn dataField="category" headerText="Category" />
+					    <mx:DataGridColumn dataField="description" headerText="Description" />
+					    <mx:DataGridColumn dataField="image" headerText="Image" />
+					    <mx:DataGridColumn dataField="price" headerText="Price" />
+					    <mx:DataGridColumn dataField="qty" headerText="Qty" />
+					</mx:columns>
+				</mx:DataGrid>
+				<mx:Button label="Get Data" click="productService.findAll()"/>
+			</mx:Panel>
+		</mx:Canvas>
+		
+		<Chat id="chat" username="{user.name}"/>
+		
+	</mx:Accordion>
+</mx:Application>

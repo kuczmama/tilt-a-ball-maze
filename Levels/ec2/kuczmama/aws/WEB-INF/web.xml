@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app>
+  <display-name>Example</display-name>
+
+  <!-- Declare the existence of a servlet. -->
+  <servlet>
+    <servlet-name>GetURLs</servlet-name>
+    <servlet-class>GetURLs</servlet-class>
+  </servlet>
+
+  <!-- Map URLs to that servlet. -->
+  <servlet-mapping>
+    <servlet-name>GetURLs</servlet-name>
+    <url-pattern>/getURLs</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>StoreUrls</servlet-name>
+    <servlet-class>StoreUrls</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>StoreUrls</servlet-name>
+    <url-pattern>/store</url-pattern>
+  </servlet-mapping>
+</web-app>

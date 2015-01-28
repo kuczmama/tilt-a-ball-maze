@@ -1,0 +1,1 @@
+export CLASSPATH=".:/opt/jetty/webapps/URLAPPV1/WEB-INF/lib/*:/opt/jetty/lib/*"

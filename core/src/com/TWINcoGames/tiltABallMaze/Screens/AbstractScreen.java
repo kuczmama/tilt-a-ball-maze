@@ -21,8 +21,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -38,8 +41,10 @@ public abstract class AbstractScreen  extends ScreenAdapter implements Screen{
 	protected DrawShapes drawShape;
 	protected ShapeRenderer shapeRenderer;
 	protected Settings settings;
-	protected final Stage stage;
+	protected  Stage stage;
 	protected int screenWidth, screenHeight;
+	protected TextureAtlas atlas;
+	protected Skin skin;
 	
 	protected AbstractScreen() {
 		Gdx.input.setCatchBackKey(true);
@@ -53,6 +58,8 @@ public abstract class AbstractScreen  extends ScreenAdapter implements Screen{
 		screenHeight = Gdx.graphics.getHeight();
 		stage = new Stage(new ScreenViewport());
 		Gdx.input.setInputProcessor(stage);
+		atlas = new TextureAtlas("ui/atlas.atlas");
+		skin = new Skin(Gdx.files.internal("ui/menuSkin.json"), atlas);
 	}
 	
 	@Override

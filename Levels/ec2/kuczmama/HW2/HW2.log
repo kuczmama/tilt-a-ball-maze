@@ -1,0 +1,11 @@
+2014-09-02 11:31:23.427 ceclnx01 NULL Could not create server
+2014-09-02 11:32:08.772 ceclnx01 NULL Could not create server
+2014-09-02 11:35:20.609 ceclnx01 NULL Could not create server
+2014-09-02 11:42:12.688 ceclnx01 NULL Could not create server
+2014-09-02 11:43:58.738 ceclnx01 NULL Could not create server
+2014-09-02 12:54:51.917 ceclnx01 /127.0.0.1:48639 Error reading the greeting from client
+2014-09-02 16:22:14.313 ceclnx01 /127.0.0.1:50800 Error reading the greeting from client
+2014-09-02 16:22:35.088 ceclnx01 /127.0.0.1:50807 Error reading the greeting from client
+2014-09-02 16:22:55.161 ceclnx01 /127.0.0.1:50811 Error reading the greeting from client
+2014-09-04 12:30:13.683 ceclnx01 /127.0.0.1:39539 Error reading the greeting from client
+2014-09-04 12:30:13.684 ceclnx01 /127.0.0.1:39539 Error validating greeting

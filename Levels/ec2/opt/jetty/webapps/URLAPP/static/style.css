@@ -1,0 +1,42 @@
+#page {
+	width: 800px;
+	margin-left: auto;
+	margin-right:auto;
+
+}
+
+#menu {
+	width: 150px;
+	float: left;
+	border-right: thick solid black;
+}
+
+#footer {
+	margin-top: 30px;
+	clear: both;
+	width: 800px;
+	margin-left: auto;
+	margin-right:auto;
+}
+
+
+#header {
+clear: both;
+}
+
+.formitem label {
+	text-align: right;
+	width: 150px;
+	float: left;
+	padding-right: 5px;
+}
+
+#message {
+	font-size: +1em;
+	color: red;
+	padding: 10px;
+}
+
+#main {
+padding: 10px;
+}

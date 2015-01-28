@@ -1,0 +1,3 @@
+#!/bin/bash
+export CLASSPATH=".:/opt/jetty/lib/*:../lib/*"
+javac kuczmama/*.java

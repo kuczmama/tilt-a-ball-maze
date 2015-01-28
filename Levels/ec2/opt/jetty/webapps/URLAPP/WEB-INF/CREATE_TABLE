@@ -1,0 +1,17 @@
+CREATE TABLE IF NOT EXISTS `users` (
+
+ `uid` varchar(20) NOT NULL,
+
+ `name` tinytext NOT NULL,
+
+ `password` tinytext NOT NULL,
+
+ `lastAccess` int(11) NOT NULL,
+
+ `notes` double NOT NULL,
+
+ PRIMARY KEY (`uid`)
+
+ ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+//Database called ---- urlappdb
